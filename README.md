@@ -1,1 +1,1 @@
-# elixir-api-go
+# elixir-api-go with hexagonal architecture
