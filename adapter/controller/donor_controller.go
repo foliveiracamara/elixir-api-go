@@ -4,41 +4,68 @@ import (
 	"net/http"
 
 	"github.com/foliveiracamara/elixir-api-go/domain/entity"
-	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
-func ListDonors(c echo.Context) error {
-	if entity.Donors == nil{
-		return c.String(http.StatusNotFound, "No user found")
+func ListDonors(ctx echo.Context) error {
+	if entity.Donors == nil {
+		return ctx.String(http.StatusNotFound, "No user found")
 	}
-	return c.JSON(http.StatusOK, entity.Donors)
+	return ctx.JSON(http.StatusOK, entity.Donors)
 }
 
-// func GetDonor(c echo.Context) error {
-// 	id, _ := strconv.Atoi(c.Param("DonorId"))
-// 	for i, _ := range entity.Donors{
-// 		if entity.Donor.DonorId == id {
-// 			return c.JSON(http.StatusOK, entity.Donor)
-// 		}
-// 	}
-// 	return c.JSON(http.StatusBadRequest, nil)
-// }
+func GetDonorById(ctx echo.Context) error {
+	id := ctx.Param("id")
+	for _, donor := range entity.Donors {
+		if donor.DonorId == id {
+			return ctx.JSON(http.StatusOK, donor)
+		}
+	}
+	return ctx.JSON(http.StatusBadRequest, nil)
+}
 
-func CreateDonor(c echo.Context) error {
-	newDonor := entity.Donor{}	
-	err := c.Bind(&newDonor)
+func CreateDonor(ctx echo.Context) error {
+	newDonor := entity.Donor{}
+	err := ctx.Bind(&newDonor)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity)
 	}
-	newDonor.DonorId = generateUUID()
+	newDonor.DonorId = GenerateUUID()
 	entity.Donors = append(entity.Donors, newDonor)
-	return c.JSON(http.StatusCreated, entity.Donors)
+	return ctx.JSON(http.StatusCreated, entity.Donors)
 }
 
-func generateUUID() string {
-	uuid := uuid.New()
-  return uuid.String() 
+func UpdateDonor(ctx echo.Context) error {
+	id := ctx.Param("id")
+	for i := range entity.Donors {
+		if entity.Donors[i].DonorId == id {
+			entity.Donors[i].IsOrganDonor = true
+			return ctx.JSON(http.StatusOK, entity.Donors[i])
+		}
+	}
+	return ctx.JSON(http.StatusNotFound, nil)
+}
+
+func DeleteDonor(ctx echo.Context) error {
+	id := ctx.Param("id")
+	for i := range entity.Donors {
+		if entity.Donors[i].DonorId == id {
+			entity.Donors = append(entity.Donors[:i], entity.Donors[i+1:]...)
+			return ctx.JSON(http.StatusOK, nil)
+		}
+	}
+	return ctx.JSON(http.StatusNotFound, nil)
+}
+
+func LoginDonor(ctx echo.Context) error {
+	email := ctx.Param("email")
+	password := ctx.Param("password")
+	for i := range entity.Donors {
+		if entity.Donors[i].Email == email && entity.Donors[i].Password == password {
+			return ctx.JSON(http.StatusOK, nil)
+		}
+	}
+	return ctx.JSON(http.StatusNotFound, nil)
 }
 
 

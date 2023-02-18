@@ -1,10 +1,12 @@
 package entity
 
-import "time"
-
 type Post struct {
-	PublicationId   string    `json:"publicationId"`
-	Description     string    `json:"description"`
-	PublicationDate time.Time `json:"publicationDate"`
-	Receiver        string    `json:"receiver"`
+	PostId      string `json:"postId"`
+	Description string `json:"description"`
+	PostDate    string `json:"postDate"`
+	Receiver    string `json:"receiver"`
 }
+
+type posts []Post
+
+var Posts posts
