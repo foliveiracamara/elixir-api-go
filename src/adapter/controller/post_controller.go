@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/foliveiracamara/elixir-api-go/domain/entity"
+	"github.com/foliveiracamara/elixir-api-go/src/adapter/utils"
+	"github.com/foliveiracamara/elixir-api-go/src/domain/entity"
 	"github.com/labstack/echo/v4"
 )
 
@@ -31,8 +32,8 @@ func CreatePost(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	newPost.PostId = GenerateUUID()
-	newPost.PostDate = GetCurrentDateTime()
+	newPost.PostId = utils.GenerateUUID()
+	newPost.PostDate = utils.GetCurrentDateTime()
 	entity.Posts = append(entity.Posts, newPost)
 	return ctx.JSON(http.StatusCreated, newPost)
 }

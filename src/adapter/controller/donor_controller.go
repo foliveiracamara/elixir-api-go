@@ -3,7 +3,8 @@ package controller
 import (
 	"net/http"
 
-	"github.com/foliveiracamara/elixir-api-go/domain/entity"
+	"github.com/foliveiracamara/elixir-api-go/src/adapter/utils"
+	"github.com/foliveiracamara/elixir-api-go/src/domain/entity"
 	"github.com/labstack/echo/v4"
 )
 
@@ -30,7 +31,7 @@ func CreateDonor(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity)
 	}
-	newDonor.DonorId = GenerateUUID()
+	newDonor.DonorId = utils.GenerateUUID()
 	entity.Donors = append(entity.Donors, newDonor)
 	return ctx.JSON(http.StatusCreated, entity.Donors)
 }
