@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/foliveiracamara/elixir-api-go/adapter/controller"
+	"github.com/foliveiracamara/elixir-api-go/src/adapter/controller"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
