@@ -12,9 +12,9 @@ func GenerateUUID() string {
 }
 
 func GetCurrentDateTime()	string {
-	return time.Now().Format("01-02-2006 15:04")
+	return string(time.Now().Format("01-02-2006 15:04"))
 }
 
 func GetCurrentDate() string {
-	return time.Now().Format("01-02-2006")
+	return string(time.Now().Format("01-02-2006"))
 }
